@@ -3,22 +3,22 @@ CLASSFILES = RMQDriver.class driver/RMQFactory.class rmq/PrecomputedRMQ.class rm
 all: $(CLASSFILES)
 
 RMQDriver.class: RMQDriver.java
-	javac $<
+	javac RMQDriver.java
 
 driver/RMQFactory.class: driver/RMQFactory.java
-	javac $<
+	javac driver/RMQFactory.java
 
 rmq/PrecomputedRMQ.class: rmq/PrecomputedRMQ.java
-	javac $<
+	javac rmq/PrecomputedRMQ.java
 
 rmq/SparseTableRMQ.class: rmq/SparseTableRMQ.java
-	javac $<
+	javac rmq/SparseTableRMQ.java
 
 rmq/HybridRMQ.class: rmq/HybridRMQ.java
-	javac $<
+	javac rmq/HybridRMQ.java
 
 rmq/FischerHeunRMQ.class: rmq/FischerHeunRMQ.java
-	javac $<
+	javac rmq/FischerHeunRMQ.java
 
 clean:
 	rm -f *~ *.class
