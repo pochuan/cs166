@@ -18,10 +18,14 @@ public class FischerHeunRMQ implements RMQ {
         int n = elems.length;
         int b = (int) Math.floor( (0.25) * ( Math.log(n) / Math.log(2) ) );
         
+        // Test stuff
+        float[] test = {32, 45, 16, 18, 9, 33};
+        float[] test2 = {27, 18, 28, 18, 28, 45, 90, 45, 23, 53, 60, 28, 74, 71, 35};
+        long cn = CartesianNumber(test2);
     }
 
 
-    private int[] CartesianNumber(float[] elems) {
+    private long CartesianNumber(float[] elems) {
         int b = elems.length;
         int[] cartesianNum = new int[2*b];
         int idx = 0;
@@ -45,7 +49,25 @@ public class FischerHeunRMQ implements RMQ {
         while (idx < 2*b) {
             cartesianNum[idx] = 0; idx++;
         }
-        return cartesianNum;
+        long CN = 0;
+        long one = 1;
+        for (int i = 0; i < 2*b; ++i) {
+            CN = CN << 1;
+            if (cartesianNum[i] == 1) {
+                CN = CN | one;
+            } 
+        }
+
+        /* 
+        // Debug
+        for (int ii = 0; ii < cartesianNum.length; ++ii) {
+            System.out.print(cartesianNum[ii]);
+        }
+        System.out.println("long");
+        System.out.println(CN);
+        */
+
+        return CN;
     }
 
     /**
@@ -55,15 +77,10 @@ public class FischerHeunRMQ implements RMQ {
     @Override
     public int rmq(int i, int j) {
         // TODO: Implement this!
-        System.out.println("Running Fischer Heun!");
-        /*
-        float[] test = {32, 45, 16, 18, 9, 33};
-        float[] test2 = {27, 18, 28, 18, 28, 45, 90, 45, 23, 53, 60, 28, 74, 71, 35};
-        int [] cn = CartesianNumber(test2);
-        for (int ii = 0; ii < cn.length; ++ii) {
-            System.out.print(cn[ii]);
-        }
-        */
+        System.out.println("Query Fischer-Heun!");
+        
+
+        
         return -1;
     }
 }
