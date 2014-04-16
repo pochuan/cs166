@@ -62,8 +62,18 @@ int blackHeight(struct node* node, bool parentRed) {
  * Given as input a sorted array of elements, returns a new red/black tree
  * containing the elements of that array.
  *
- * TODO: Edit this comment to describe why this function runs in time O(n).
+ * This algorithm buids a red black tree by making a node from the
+ * median elem in the list, and then recursively building the rest of 
+ * the tree by calling the same function on the elems left and right of 
+ * the median. The base cases are when the list of elems passed in are 
+ * length 0, 1, or 2. Most of the nodes are black, except for when we reach
+ * the base case where the list length is 2, and we set it to have one red 
+ * child. This algorithm adds each elem in the list to the tree without 
+ * needing do any tree rotations or fix the colors since it structurally
+ * creates a balanced tree that satisfies the red black tree constraints.
+ * Thus it runs in O(n) time.
  */
+
 struct node* to_red_black_tree(int elems[], unsigned length) {
 	return medianTree(elems, 0, length);
 }
