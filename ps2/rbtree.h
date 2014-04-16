@@ -1,3 +1,7 @@
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stdint.h>
 /**************************************************************************
  * File: rbtree.h
  *
@@ -29,6 +33,12 @@ struct node {
   struct node* right;
   int key;
 };
+
+// Returns if a node is red
+bool red(struct node* someNode); 
+
+// Masks away the color bit
+struct node* left(struct node* leftPointer);
 
 /**
  * Function: is_red_black_tree(struct node* root);

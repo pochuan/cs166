@@ -18,9 +18,11 @@ LDFLAGS = -lm
 # In this section, you list the files that are part of the project.
 # If you add/change names of source files, here is where you
 # edit the Makefile.
-SOURCES = main.c rbtree.c rbtree.h
+HEADERS = rbtree.h
+SOURCES = main.c rbtree.c
+DEPS = rbtree.h
 OBJECTS = $(SOURCES:.c=.o)
-TARGET = rbtree
+TARGET = main
 
 ##### TARGETS #####
 
@@ -29,8 +31,20 @@ TARGET = rbtree
 # above, this Makefile file will build the one named TARGET and
 # assume that it depends on all the named OBJECTS files.
 
-$(TARGET) : $(OBJECTS)
-    $(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+$(TARGET) : $(OBJECTS) $(DEPS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+%.o: %.c $(HEADERS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+#main: rbtree.o
+#	$(CC) $(CFLAGS) -o main main.o rbtree.o
+
+#rbtree.o : rbtree.c rbtree.h
+#	$(CC) $(CFLAGS) -c -o rbtree.o rbtree.c
+
+#other: main.o
+#	$(CC) $(CFLAGS) -c -o main.o main.c
 
 # Phony means not a "real" target, it doesn't build anything
 # The phony target "clean" is used to remove all compiled object files.
@@ -38,4 +52,4 @@ $(TARGET) : $(OBJECTS)
 .PHONY: clean
 
 clean:
-    @rm -f $(TARGET) $(OBJECTS) core
+	@rm -f $(TARGET) $(OBJECTS) core

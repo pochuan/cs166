@@ -4,6 +4,17 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+// Returns if a node is red
+bool red(struct node* someNode) {
+    return (((uintptr_t)someNode->left) & 1);
+}
+
+// Masks away the color bit
+struct node* left(struct node* leftPointer) {
+    return (struct node*)(((uintptr_t)leftPointer) & (~1));
+}
+
+
 /**
  * Function: is_red_black_tree(struct node* root);
  * --------------------------------------------------------------------------
