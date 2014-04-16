@@ -65,6 +65,28 @@ int blackHeight(struct node* node, bool parentRed) {
  * TODO: Edit this comment to describe why this function runs in time O(n).
  */
 struct node* to_red_black_tree(int elems[], unsigned length) {
-	/* TODO: Implement this! */
-	return NULL;
+	return medianTree(elems, 0, length);
+}
+
+struct node *medianTree(int elems[], int start, int end) {
+    if (end-start == 0) return NULL;
+    if (end-start == 1) return newNode(elems[start], NULL, NULL, true);
+    if (end-start == 2) return newNode(elems[start+1], newNode(elems[start], NULL, NULL, false), NULL, true);
+
+    // median
+    int m = (end-start)/2;
+    struct node* leftTree = medianTree(elems, start, m-1);
+    struct node* rightTree = medianTree(elems, m+1, end);
+
+    return(newNode(elems[m], leftTree, rightTree, true));
+}
+
+struct node *newNode(int key, struct node *left, struct node *right, bool isBlack) {
+    struct node *newNode = (struct node*) malloc(sizeof(struct node));
+    if (!isBlack) {
+        left = left | 1;
+    }
+    newNode -> left = left;
+    newNode -> right = right;
+    return newNode;
 }
