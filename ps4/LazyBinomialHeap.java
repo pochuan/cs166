@@ -8,6 +8,11 @@
  * this priority queue.
  */
 public class LazyBinomialHeap {
+
+	MeldableLinkedList trees;
+	LCRSTree min;
+	int size;
+
 	/**
 	 * Constructs a new, empty LazyBinomialHeap.
 	 */
@@ -22,7 +27,7 @@ public class LazyBinomialHeap {
 	 */
 	public boolean isEmpty() {
 		// TODO: Fill this in!
-		return false;
+		return (size == 0);
 	}
 	
 	/**
@@ -33,6 +38,12 @@ public class LazyBinomialHeap {
 	 */
 	public void enqueue(int key) {
 		// TODO: Fill this in!
+		LCRSTree newTree = new LCRSTree(key);
+		trees.append(newTree);
+		size++;
+		if (min == null || newTree.getMinValue() < min.getMinValue()) {
+			min = newTree;
+		}
 	}
 	
 	/**
@@ -49,7 +60,8 @@ public class LazyBinomialHeap {
 		assert !isEmpty() : "Priority queue is empty!";
 		
 		// TODO: Implement this!
-		return 0;
+
+		return min.getMinValue;
 	}
 	
 	/**
@@ -60,9 +72,27 @@ public class LazyBinomialHeap {
 	 */
 	public int extractMin() {
 		assert !isEmpty() : "Priority queue is empty!";
-		
+		// Take the min val out of its binomial tree and meld its children
+		// back into the list of trees
+		int minVal = min.getMinValue();
+		trees.remove(min);
+		trees.meld(min.removeMin());
+		size--;
+
+		// Now coalesce the remaining trees
+		double logBase2 = Math.log(size) / Math.log(2);
+		LCRSTree[] wonky = new LCRSTree[(int)Math.ceil(logBase2)];
+
+		LCRSTree curr = trees.root;
+		while(curr != null) {
+			if (wonky[curr.order].root == null) {
+				wonky[curr.order].root = curr;
+			}
+			curr = 
+		}
+
 		// TODO: Implement this!
-		return 0;
+		return minVal;
 	}
 	
 	/**
@@ -78,6 +108,8 @@ public class LazyBinomialHeap {
 	public static LazyBinomialHeap meld(LazyBinomialHeap one,
 	                                    LazyBinomialHeap two) {
 	  // TODO: Implement this!
+
+
 	  return null;
   }
 }
