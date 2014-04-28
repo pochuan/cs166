@@ -1,4 +1,6 @@
 public class LCRSTree {
+    /* So we can use this in a MeldableLinkedList */
+
     LCRSNode root;
     int order;
 
@@ -36,10 +38,11 @@ public class LCRSTree {
         int currOrder = order-1;
         while (currNode != null) {
             assert (order >= 0) : "LCRSTree removeMin: Too many siblings";
-            siblings.append(new LCRSTree(currNode, currOrder));
+            siblings.append(new LinkedListNode(new LCRSTree(currNode, currOrder)));
             currOrder--;
-            currNode = currNode->rightSibling;
+            currNode = currNode.rightSibling;
         }
         return siblings;
     }
+
 }

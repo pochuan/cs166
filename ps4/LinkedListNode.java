@@ -1,9 +1,9 @@
 public class LinkedListNode {
     LinkedListNode prev;
     LinkedListNode next;
-    int payload;
+    Object payload;
 
-    public LinkedListNode(int newPayload) {
+    public LinkedListNode(Object newPayload) {
         payload = newPayload;
         prev = null;
         next = null;

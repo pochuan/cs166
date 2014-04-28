@@ -10,6 +10,7 @@
 public class LazyBinomialHeap {
 
 	MeldableLinkedList trees;
+	LinkedListNode minNode;
 	LCRSTree min;
 	int size;
 
@@ -39,10 +40,12 @@ public class LazyBinomialHeap {
 	public void enqueue(int key) {
 		// TODO: Fill this in!
 		LCRSTree newTree = new LCRSTree(key);
-		trees.append(newTree);
+		LinkedListNode newNode = new LinkedListNode(newTree);
+		trees.append(newNode);
 		size++;
 		if (min == null || newTree.getMinValue() < min.getMinValue()) {
 			min = newTree;
+			minNode = newNode;
 		}
 	}
 	
@@ -61,7 +64,7 @@ public class LazyBinomialHeap {
 		
 		// TODO: Implement this!
 
-		return min.getMinValue;
+		return min.getMinValue();
 	}
 	
 	/**
@@ -79,24 +82,49 @@ public class LazyBinomialHeap {
 		trees.meld(min.removeMin());
 		size--;
 
+		if (size == 0) {
+			trees = new MeldableLinkedList();
+			return minVal;
+		}
+
 		// Now coalesce the remaining trees
 		double logBase2 = Math.log(size) / Math.log(2);
 		LCRSTree[] wonky = new LCRSTree[(int)Math.ceil(logBase2)];
 
-		LCRSTree curr = trees.root;
-		while(curr != null) {
+		LinkedListNode currNode = trees.root;
+		while(currNode != null) {
+			LCRSTree curr = (LCRSTree)currNode.payload;
 			while (wonky[curr.order] != null) {
 				// mergeEqual increments curr's order
 				curr.mergeEqual(wonky[curr.order]);
 				wonky[curr.order-1] = null;
 			}
 			wonky[curr.order] = curr;
-			curr = curr.next;
+			currNode = currNode.next;
 		}
+
+		// newMinVal will always be changed before we start using it for comparisons
+		// This was necessary to satisfy the compiler
+		int newMinVal = -1;
+		boolean newMinValSet = false;
 		MeldableLinkedList wonkyList = new MeldableLinkedList();
 		for (int i = 0; i < wonky.length; ++i) {
 			if (wonky[i] != null) {
-				wonkyList.append(wonky[i]);
+				LinkedListNode newNode = new LinkedListNode(wonky[i]);
+				if (!newMinValSet) {
+					newMinValSet = true;
+					newMinVal = wonky[i].getMinValue();
+					min = wonky[i];
+					minNode = newNode;
+				}
+				else {
+					if (wonky[i].getMinValue() < newMinVal) {
+						newMinVal = wonky[i].getMinValue();
+						min = wonky[i];
+						minNode = newNode;
+					}
+				}
+				wonkyList.append(newNode);
 			}
 		}
 		trees = wonkyList;
@@ -121,12 +149,15 @@ public class LazyBinomialHeap {
 		newHeap.size = one.size + two.size;
 		if (one.min() <= two.min()) {
 			newHeap.min = one.min;
+			newHeap.minNode = one.minNode;
 		}
 		else {
 			newHeap.min = two.min;
+			newHeap.minNode = two.minNode;
 		}
 
-		newHeap.trees = one.trees.meld(two.trees);
+		one.trees.meld(two.trees);
+		newHeap.trees = one.trees;
 
 	  return newHeap;
   }

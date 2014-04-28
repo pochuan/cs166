@@ -31,7 +31,7 @@ public class MeldableLinkedList {
         }
     }
     
-    public boolean remove(int removeVal) {
+    public boolean remove(Object removeVal) {
         LinkedListNode pointer = root;
         while (pointer != null) {
             if (pointer.payload == removeVal) {
@@ -52,6 +52,27 @@ public class MeldableLinkedList {
             pointer = pointer.next;
         }
         return false;
+    }
+
+    /* Undefined behavior if you give me a node that isn't actually
+     * in this list! */
+    public void removeNode(LinkedListNode toRemove) {
+        if (toRemove == null) {
+            return;
+        }
+        if (toRemove == root) {
+            root = toRemove.next;
+        }
+        else {
+            toRemove.prev.next = toRemove.next;
+        }
+
+        if (toRemove == end) {
+            end = toRemove.prev;
+        }
+        else {
+            toRemove.next.prev = toRemove.prev;
+        }
     }
 
    public void meld(MeldableLinkedList list) {
