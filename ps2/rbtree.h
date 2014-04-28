@@ -40,6 +40,8 @@ bool red(struct node* someNode);
 // Masks away the color bit
 struct node* left(struct node* leftPointer);
 
+int blackHeight(struct node *node, bool parentRed);
+
 /**
  * Function: is_red_black_tree(struct node* root);
  * --------------------------------------------------------------------------
@@ -70,5 +72,9 @@ _Bool is_red_black_tree(struct node* root);
  * For full credit, this function must run in time O(n).
  */
 struct node* to_red_black_tree(int elems[], unsigned length);
+
+struct node *medianTree(int elems[], int start, int end);
+
+struct node *newNode(int key, struct node *left, struct node *right, bool isBlack);
 
 #endif

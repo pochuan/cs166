@@ -12,7 +12,7 @@ void test_red_black(int size) {
         printf("PASS\n");
     }
     else {
-        printf("\tFAIL\n")
+        printf("\tFAIL\n");
     }
 }
 
