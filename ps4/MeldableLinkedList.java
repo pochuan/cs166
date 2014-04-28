@@ -4,49 +4,48 @@
  * stone toward building the LazyBinomialHeap.
  */
 
-public class linkedListNode {
-    linkedListNode prev;
-    linkedListNode next;
-    int payload;
-
-    public linkedListNode(int newPayload) {
-        payload = newPayload;
-        prev = NULL;
-        next = NULL;
-    }
-}
-
 public class MeldableLinkedList {
 	// TODO: Implement this class as you see fit!
-    linkedListNode root;
-    linkedListNode end;
+    LinkedListNode root;
+    LinkedListNode end;
 
     public MeldableLinkedList() {
-        root = NULL;
-        end = NULL;
+        root = null;
+        end = null;
     }
 
-    public void append(linkedListNode newNode) {
-        if (end == NULL) {
+    public void append(LinkedListNode newNode) {
+        if (end == null) {
             root = newNode;
             end = newNode;
+            //System.out.println("Append: end was null");
         }
         else {
+            //System.out.println("Append: end was not null");
             end.next = newNode;
             newNode.prev = end;
             end = newNode;
+
+            //System.out.println("Payload is " + end.payload);
+            //System.out.println("Prev is " + end.prev);
         }
     }
     
-    public boolean remove(linkedListNode removeNode) {
-        linkedListNode pointer = root;
-        while (pointer != NULL) {
-            if (pointer.payload == removeNode.payload) {
-                if (pointer.prev != NULL) {
+    public boolean remove(int removeVal) {
+        LinkedListNode pointer = root;
+        while (pointer != null) {
+            if (pointer.payload == removeVal) {
+                if (pointer.prev != null) {
                     pointer.prev.next = pointer.next;
                 }
-                if (pointer.next != NULL) {
+                else {
+                    root = pointer.next;
+                }
+                if (pointer.next != null) {
                     pointer.next.prev = pointer.prev;
+                }
+                else {
+                    end = pointer.prev;
                 }
                 return true;
             }
@@ -56,34 +55,36 @@ public class MeldableLinkedList {
     }
 
    public void meld(MeldableLinkedList list) {
-        if (root == NULL) {
+        if (root == null) {
             root = list.root;
             end = list.end;
+            return;
         }
-        if (list.root != NULL) {
+        if (list.root != null) {
             end.next = list.root;
             list.root.prev = end;
         }
     }
 
-    public linkedListNode find(linkedListNode target) {
-        linkedListNode pointer = root;
-        while (pointer != NULL) {
+    public LinkedListNode find(LinkedListNode target) {
+        LinkedListNode pointer = root;
+        while (pointer != null) {
             if (pointer.payload == target.payload) {
                 return pointer;
             }
             pointer = pointer.next;
         }
-        return NULL;
+        return null;
     }
 
-    public string toString() {
-        linkedListNode pointer = root;
-        String returnVal;
-        while (pointer != NULL) {
+    public String toString() {
+        LinkedListNode pointer = root;
+        String returnVal = "";
+        while (pointer != null) {
+            //System.out.println(pointer.toString());
             returnVal += " " + pointer.payload;
             returnVal += " [prev = " + pointer.prev;
-            returnVal += " next = " + pointer.next + "]";
+            returnVal += ", next = " + pointer.next + "]\n";
             pointer = pointer.next;
         }
         return returnVal;
