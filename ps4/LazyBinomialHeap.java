@@ -85,12 +85,21 @@ public class LazyBinomialHeap {
 
 		LCRSTree curr = trees.root;
 		while(curr != null) {
-			if (wonky[curr.order].root == null) {
-				wonky[curr.order].root = curr;
+			while (wonky[curr.order] != null) {
+				// mergeEqual increments curr's order
+				curr.mergeEqual(wonky[curr.order]);
+				wonky[curr.order-1] = null;
 			}
-			curr = 
+			wonky[curr.order] = curr;
+			curr = curr.next;
 		}
-
+		MeldableLinkedList wonkyList = new MeldableLinkedList();
+		for (int i = 0; i < wonky.length; ++i) {
+			if (wonky[i] != null) {
+				wonkyList.append(wonky[i]);
+			}
+		}
+		trees = wonkyList;
 		// TODO: Implement this!
 		return minVal;
 	}
@@ -108,8 +117,17 @@ public class LazyBinomialHeap {
 	public static LazyBinomialHeap meld(LazyBinomialHeap one,
 	                                    LazyBinomialHeap two) {
 	  // TODO: Implement this!
+		LazyBinomialHeap newHeap = new LazyBinomialHeap();
+		newHeap.size = one.size + two.size;
+		if (one.min() <= two.min()) {
+			newHeap.min = one.min;
+		}
+		else {
+			newHeap.min = two.min;
+		}
 
+		newHeap.trees = one.trees.meld(two.trees);
 
-	  return null;
+	  return newHeap;
   }
 }

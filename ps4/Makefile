@@ -1,4 +1,4 @@
-CLASSFILES = LazyBinomialHeap.class MeldableLinkedList.class LinkedListNode.class PS4Driver.class
+CLASSFILES = LazyBinomialHeap.class MeldableLinkedList.class LinkedListNode.class PS4Driver.class LCRSTree.class LCRSNode.class
 
 all: $(CLASSFILES)
 
@@ -13,5 +13,11 @@ LinkedListNode.class: LinkedListNode.java
 
 PS4Driver.class: PS4Driver.java
 	javac PS4Driver.java
+
+LCRSTree.class: LCRSTree.java
+	javac LCRSTree.java
+	
+LCRSNode.class: LCRSNode.java
+	javac LCRSNode.java
 clean:
 	rm -f *~ *.class
