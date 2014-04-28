@@ -1,0 +1,43 @@
+System.out.println("i: " + i + ", j: " + j + ", block size: " + blockSize);
+        if (i % blockSize == 0 && (j + 1) % blockSize == 0) {
+            int newMin = origIndices[upperLevel.rmq(i / blockSize, j / blockSize)];
+            System.out.println("Returning upper level: " + newMin);
+            // Potential problem: the upper level rmq is indexed wrong
+            return newMin;
+        }
+        
+        int minIndex = -1;
+        float min = 0;
+        
+        if (i % blockSize != 0) {
+            System.out.println("i");
+            minIndex = linearScanRMQ(i, blockSize * (i / blockSize + 1));
+            min = origElems[minIndex];
+            
+            // If the middle section actually has any blocks
+            if (i / blockSize + 1 != (j + 1) / blockSize) {
+                System.out.println("Midsection has blocks");
+                int ulMinIndex = origIndices[upperLevel.rmq(i / blockSize + 1, (j - 1) / blockSize)];
+                if (origElems[ulMinIndex] < min) {
+                    minIndex = ulMinIndex;
+                    min = origElems[minIndex];
+                }
+            }
+        }
+        else if (i / blockSize != j / blockSize) {
+            System.out.println("no i, yes midsection");
+            minIndex = origIndices[upperLevel.rmq(i / blockSize, (j - 1) / blockSize)];
+            min = origElems[minIndex];
+            System.out.println("Midesection min index is " + minIndex);
+        }
+        
+        if ((j + 1) % blockSize != 0) {
+            System.out.println("j");
+            int jMinIndex = linearScanRMQ(blockSize * (j / blockSize), j);
+            if (minIndex == -1 || origElems[jMinIndex] < min) {
+                System.out.println("Returning jMinIndex: " + jMinIndex);
+                return jMinIndex;
+            }
+        }
+        System.out.println("Returning minIndex: " + minIndex);
+        return minIndex;
