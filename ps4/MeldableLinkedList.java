@@ -4,17 +4,17 @@
  * stone toward building the LazyBinomialHeap.
  */
 
-public class MeldableLinkedList {
+public class MeldableLinkedList<T>{
 	// TODO: Implement this class as you see fit!
-    LinkedListNode root;
-    LinkedListNode end;
+    LinkedListNode<T> root;
+    LinkedListNode<T> end;
 
     public MeldableLinkedList() {
         root = null;
         end = null;
     }
 
-    public void append(LinkedListNode newNode) {
+    public void append(LinkedListNode<T> newNode) {
         if (end == null) {
             root = newNode;
             end = newNode;
@@ -31,8 +31,8 @@ public class MeldableLinkedList {
         }
     }
     
-    public boolean remove(Object removeVal) {
-        LinkedListNode pointer = root;
+    public boolean remove(T removeVal) {
+        LinkedListNode<T> pointer = root;
         while (pointer != null) {
             if (pointer.payload == removeVal) {
                 if (pointer.prev != null) {
@@ -56,7 +56,7 @@ public class MeldableLinkedList {
 
     /* Undefined behavior if you give me a node that isn't actually
      * in this list! */
-    public void removeNode(LinkedListNode toRemove) {
+    public void removeNode(LinkedListNode<T> toRemove) {
         if (toRemove == null) {
             return;
         }
@@ -75,7 +75,7 @@ public class MeldableLinkedList {
         }
     }
 
-   public void meld(MeldableLinkedList list) {
+   public void meld(MeldableLinkedList<T> list) {
 
         if (root == null) {
             root = list.root;
@@ -88,8 +88,8 @@ public class MeldableLinkedList {
         }
     }
 
-    public LinkedListNode find(LinkedListNode target) {
-        LinkedListNode pointer = root;
+    public LinkedListNode<T> find(LinkedListNode<T> target) {
+        LinkedListNode<T> pointer = root;
         while (pointer != null) {
             if (pointer.payload == target.payload) {
                 return pointer;
@@ -100,7 +100,7 @@ public class MeldableLinkedList {
     }
 
     public String toString() {
-        LinkedListNode pointer = root;
+        LinkedListNode<T> pointer = root;
         String returnVal = "";
         while (pointer != null) {
             //System.out.println(pointer.toString());

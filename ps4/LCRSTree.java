@@ -32,13 +32,13 @@ public class LCRSTree {
         return root.payload;
     }
 
-    public MeldableLinkedList removeMin() {
-        MeldableLinkedList siblings = new MeldableLinkedList();
+    public MeldableLinkedList<LCRSTree> removeMin() {
+        MeldableLinkedList<LCRSTree> siblings = new MeldableLinkedList<LCRSTree>();
         LCRSNode currNode = root.leftChild;
         int currOrder = order-1;
         while (currNode != null) {
             assert (order >= 0) : "LCRSTree removeMin: Too many siblings";
-            siblings.append(new LinkedListNode(new LCRSTree(currNode, currOrder)));
+            siblings.append(new LinkedListNode<LCRSTree>(new LCRSTree(currNode, currOrder)));
             currOrder--;
             currNode = currNode.rightSibling;
         }

@@ -1,19 +1,11 @@
-public class LinkedListNode {
-    LinkedListNode prev;
-    LinkedListNode next;
-    Object payload;
+public class LinkedListNode<T> {
+    LinkedListNode<T> prev;
+    LinkedListNode<T> next;
+    T payload;
 
-    public LinkedListNode(Object newPayload) {
+    public LinkedListNode(T newPayload) {
         payload = newPayload;
         prev = null;
         next = null;
     }
-
-    /*public String toString() {
-        String returnVal = "" + payload;
-        returnVal += " [prev = " + prev;
-        returnVal += ", next = " + next + "]";
-
-        return returnVal;
-    }*/
 }

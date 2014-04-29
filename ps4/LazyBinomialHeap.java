@@ -9,8 +9,8 @@
  */
 public class LazyBinomialHeap {
 
-	MeldableLinkedList trees;
-	LinkedListNode minNode;
+	MeldableLinkedList<LCRSTree> trees;
+	LinkedListNode<LCRSTree> minNode;
 	LCRSTree min;
 	int size;
 
@@ -18,7 +18,10 @@ public class LazyBinomialHeap {
 	 * Constructs a new, empty LazyBinomialHeap.
 	 */
 	public LazyBinomialHeap() {
-		// TODO: Fill this in!
+		min = null;
+		size = 0;
+		trees = new MeldableLinkedList<LCRSTree>();
+		minNode = null;
 	}
 	
 	/**
@@ -27,7 +30,6 @@ public class LazyBinomialHeap {
 	 * @return Whether this lazy binomial heap is empty.
 	 */
 	public boolean isEmpty() {
-		// TODO: Fill this in!
 		return (size == 0);
 	}
 	
@@ -38,9 +40,8 @@ public class LazyBinomialHeap {
 	 * @param key The key to add.
 	 */
 	public void enqueue(int key) {
-		// TODO: Fill this in!
 		LCRSTree newTree = new LCRSTree(key);
-		LinkedListNode newNode = new LinkedListNode(newTree);
+		LinkedListNode<LCRSTree> newNode = new LinkedListNode<LCRSTree>(newTree);
 		trees.append(newNode);
 		size++;
 		if (min == null || newTree.getMinValue() < min.getMinValue()) {
@@ -61,9 +62,6 @@ public class LazyBinomialHeap {
 		 *    java -ea NameOfMainClass
 		 */
 		assert !isEmpty() : "Priority queue is empty!";
-		
-		// TODO: Implement this!
-
 		return min.getMinValue();
 	}
 	
@@ -83,17 +81,17 @@ public class LazyBinomialHeap {
 		size--;
 
 		if (size == 0) {
-			trees = new MeldableLinkedList();
+			trees = new MeldableLinkedList<LCRSTree>();
 			return minVal;
 		}
 
 		// Now coalesce the remaining trees
 		double logBase2 = Math.log(size) / Math.log(2);
-		LCRSTree[] wonky = new LCRSTree[(int)Math.ceil(logBase2)];
+		LCRSTree[] wonky = new LCRSTree[(int)Math.ceil(logBase2) + 1];
 
-		LinkedListNode currNode = trees.root;
+		LinkedListNode<LCRSTree> currNode = trees.root;
 		while(currNode != null) {
-			LCRSTree curr = (LCRSTree)currNode.payload;
+			LCRSTree curr = currNode.payload;
 			while (wonky[curr.order] != null) {
 				// mergeEqual increments curr's order
 				curr.mergeEqual(wonky[curr.order]);
@@ -107,10 +105,10 @@ public class LazyBinomialHeap {
 		// This was necessary to satisfy the compiler
 		int newMinVal = -1;
 		boolean newMinValSet = false;
-		MeldableLinkedList wonkyList = new MeldableLinkedList();
+		MeldableLinkedList<LCRSTree> wonkyList = new MeldableLinkedList<LCRSTree>();
 		for (int i = 0; i < wonky.length; ++i) {
 			if (wonky[i] != null) {
-				LinkedListNode newNode = new LinkedListNode(wonky[i]);
+				LinkedListNode<LCRSTree> newNode = new LinkedListNode<LCRSTree>(wonky[i]);
 				if (!newMinValSet) {
 					newMinValSet = true;
 					newMinVal = wonky[i].getMinValue();
@@ -144,7 +142,6 @@ public class LazyBinomialHeap {
 	 */
 	public static LazyBinomialHeap meld(LazyBinomialHeap one,
 	                                    LazyBinomialHeap two) {
-	  // TODO: Implement this!
 		LazyBinomialHeap newHeap = new LazyBinomialHeap();
 		newHeap.size = one.size + two.size;
 		if (one.min() <= two.min()) {

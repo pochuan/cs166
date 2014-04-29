@@ -3,21 +3,21 @@ CLASSFILES = LazyBinomialHeap.class MeldableLinkedList.class LinkedListNode.clas
 all: $(CLASSFILES)
 
 LazyBinomialHeap.class: LazyBinomialHeap.java
-	javac LazyBinomialHeap.java
+	javac -Xlint:unchecked LazyBinomialHeap.java
 
 MeldableLinkedList.class: MeldableLinkedList.java
-	javac MeldableLinkedList.java
+	javac -Xlint:unchecked MeldableLinkedList.java
 
 LinkedListNode.class: LinkedListNode.java
-	javac LinkedListNode.java
+	javac -Xlint:unchecked LinkedListNode.java
 
 PS4Driver.class: PS4Driver.java
-	javac PS4Driver.java
+	javac -Xlint:unchecked PS4Driver.java
 
 LCRSTree.class: LCRSTree.java
-	javac LCRSTree.java
-	
+	javac -Xlint:unchecked LCRSTree.java
+
 LCRSNode.class: LCRSNode.java
-	javac LCRSNode.java
+	javac -Xlint:unchecked LCRSNode.java
 clean:
 	rm -f *~ *.class
