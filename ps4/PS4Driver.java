@@ -105,10 +105,59 @@ public class PS4Driver {
         assert extractSuccess : "Something when wrong while removing all of the mins";
         
         assert pq1.isEmpty() : "PQ was not empty after extracting all of the elements";        
-        System.out.println("\n****You'll have to check the rest of the results by hand");
+
+        heapMeldTest();
+        
 
 
         System.out.println("\nDone testing the LazyBinomialHeap");
+
+    }
+
+    public static void heapMeldTest() {
+        LazyBinomialHeap pq1 = new LazyBinomialHeap();
+
+        LazyBinomialHeap pq2 = new LazyBinomialHeap();
+
+        pq1.enqueue(10);
+        pq2.enqueue(11);
+
+        LazyBinomialHeap pq3 = LazyBinomialHeap.meld(pq1, pq2);
+
+        assert (pq3.extractMin() == 10) && (pq3.extractMin() == 11) : "Meld of two length-one heaps was successful"; 
+
+
+        pq1 = new LazyBinomialHeap();
+        pq2 = new LazyBinomialHeap();
+
+        pq1.enqueue(2);
+        pq1.enqueue(4);
+        pq1.enqueue(6);
+        pq1.enqueue(8);
+        pq1.enqueue(10);
+        pq1.enqueue(12);
+
+        pq2.enqueue(13);
+        pq2.enqueue(11);
+        pq2.enqueue(9);
+        pq2.enqueue(7);
+        pq2.enqueue(5);
+        pq2.enqueue(3);
+
+        pq3 = LazyBinomialHeap.meld(pq1, pq2);
+
+        assert (pq3.extractMin() == 2) : "Melding a larger heap worked";
+        System.out.println("\n****You'll have to check the rest of the results by hand");
+
+
+        System.out.println("Just make sure that the numbers below are in order, and that 5 appears twice");
+        pq3.enqueue(100);
+        pq3.enqueue(2);
+        pq3.enqueue(15);
+        pq3.enqueue(5);
+        while(!pq3.isEmpty()) {
+            System.out.println(pq3.extractMin());
+        }
 
     }
 
