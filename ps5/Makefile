@@ -1,4 +1,4 @@
-CLASSFILES = AliasMethodRandomGenerator.class BST.class BSTFactory.class RuntimeAnalyzer.class SplayTree.class TestingHarness.class WeightBalancedTree.class
+CLASSFILES = AliasMethodRandomGenerator.class BST.class BSTFactory.class RuntimeAnalyzer.class SplayTree.class TestingHarness.class WeightBalancedTree.class WBTNode.class
 
 all: $(CLASSFILES)
 
@@ -22,6 +22,8 @@ TestingHarness.class: TestingHarness.java
 
 WeightBalancedTree.class: WeightBalancedTree.java
 	javac WeightBalancedTree.java
+
+
 
 clean:
 	rm -f *~ *.class
