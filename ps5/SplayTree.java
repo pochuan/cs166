@@ -28,7 +28,7 @@ public class SplayTree implements BST {
 		}
 	}
 	
-	private SplayTreeNode rotateRight(SplayTreeNode a, SplayTreeNode b) {
+	private void rotateRight(SplayTreeNode a, SplayTreeNode b) {
 		assert (a != null && b != null) : "Invalid rotate right: null";
 		SplayTreeNode grandparent = b.parent;
 		// Preserve the link to the rest of the tree
@@ -39,9 +39,9 @@ public class SplayTree implements BST {
 			else if (grandparent.right == b) {
 				grandparent.right = a;
 			}
-			else {
-				//error!  Assert?
-			}
+		}
+		else {
+			root = a;
 		}
 		a.parent = grandparent;
 
@@ -52,12 +52,11 @@ public class SplayTree implements BST {
 		}
 
 		// make a the parent of b
-		a.left = b;
+		a.right = b;
 		b.parent = a;
-		return grandparent;
 	}
 
-	private SplayTreeNode rotateLeft(SplayTreeNode a, SplayTreeNode b) {
+	private void rotateLeft(SplayTreeNode a, SplayTreeNode b) {
 		assert (a != null && b != null) : "Invalid rotate left: null";
 		SplayTreeNode grandparent = a.parent;
 		// Preserve the link to the rest of the tree
@@ -68,9 +67,9 @@ public class SplayTree implements BST {
 			else if (grandparent.right == a) {
 				grandparent.right = b;
 			}
-			else {
-				//error!  Assert?
-			}
+		}
+		else {
+			root = b;
 		}
 		b.parent = grandparent;
 
@@ -83,7 +82,6 @@ public class SplayTree implements BST {
 		// make b the parent of a
 		b.left = a;
 		a.parent = b;
-		return grandparent;
 	}
 
 	// Returns true if this was actually a zigzig case, and does the zig zig.
@@ -103,6 +101,7 @@ public class SplayTree implements BST {
 			return true;
 		} 
 		if ((cur == parent.right) && (parent == grandparent.right)) {
+			//System.out.println("zig zig left");
 			rotateLeft(grandparent, parent);
 			rotateLeft(parent, cur);
 			return true;
@@ -133,24 +132,14 @@ public class SplayTree implements BST {
 	}
 
 	private boolean doZig(SplayTreeNode cur) {
-		//return (cur.parent == root);
 		if (cur.parent != root) {
 			return false;
 		}
-		// do zig
-		if (cur == root.left) {
-			cur.parent = null;
-			root.parent = cur;
-			root.left = cur.right;
-			cur.right = root;
-			root = cur;
+		if (root.left == cur) {
+			rotateRight(cur, root);
 		}
-		if (cur == root.right) {
-			cur.parent = null;
-			root.parent = cur;
-			root.right = cur.left;
-			cur.left = root;
-			root = cur;
+		else if (root.right == cur) {
+			rotateLeft(root, cur);
 		}
 		return true;
 	}
@@ -182,15 +171,10 @@ public class SplayTree implements BST {
 
 		// splay up
 		while (root != cur) {
-			if (doZigZig(cur)) {
-				continue;
+			if (!doZig(cur) && !doZigZag(cur)) {
+				doZigZig(cur);
 			}
-			if (doZigZag(cur)) {
-				continue;
-			}
-			doZig(cur);
 		}
-
 		return true;
 	}
 }
