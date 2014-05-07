@@ -1,4 +1,4 @@
-CLASSFILES = AliasMethodRandomGenerator.class BST.class BSTFactory.class RuntimeAnalyzer.class SplayTree.class TestingHarness.class WeightBalancedTree.class
+CLASSFILES = AliasMethodRandomGenerator.class BST.class BSTFactory.class RuntimeAnalyzer.class SplayTree.class TestingHarness.class WeightBalancedTree.class SplayTreeNode.class
 
 all: $(CLASSFILES)
 
@@ -16,6 +16,9 @@ RuntimeAnalyzer.class: RuntimeAnalyzer.java
 
 SplayTree.class: SplayTree.java
 	javac SplayTree.java
+
+SplayTreeNode.class: SplayTreeNode.java
+	javac SplayTreeNode.java
 
 TestingHarness.class: TestingHarness.java
 	javac TestingHarness.java
