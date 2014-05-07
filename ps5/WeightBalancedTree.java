@@ -77,17 +77,18 @@ public class WeightBalancedTree implements BST {
 	 * @return Whether it's in the BST.
 	 */
 	public boolean contains(int key) {
-		return DFS(root, key);
-	}
-    
-    public boolean DFS(WBTNode node, int key) {
-        if (node == null) return false;
-        else if (node.payload == key) return true;
-        else {
-            if (DFS(node.leftChild, key)) {
+        WBTNode cur = root;
+        while (cur != null) {
+            if (cur.payload == key) {
                 return true;
             }
-            return DFS(node.rightChild, key);
+            if (cur.payload > key) {
+                cur = cur.leftChild;
+            }
+            else {
+                cur = cur.rightChild;
+            }
         }
-    }
+        return false;
+	}
 }
