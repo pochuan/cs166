@@ -1,10 +1,14 @@
 import java.util.Arrays;
+import java.util.ArrayList;
+
 /**
  * An implementation of a static BST backed by a weight-balanced tree.
  */
 public class WeightBalancedTree implements BST {
 
     WBTNode root;
+    ArrayList <Double> sumArray = new ArrayList<Double>();
+
 	/**
 	 * Constructs a new tree from the specified array of weights. The array entry
 	 * at position 0 specifies the weight of 0, the entry at position 1 specifies
@@ -13,24 +17,23 @@ public class WeightBalancedTree implements BST {
 	 * @param The weights on the elements.
 	 */
 	public WeightBalancedTree(double[] elements) {
-		// TODO: Implement this!
-        //System.out.println("Construct WBT for " + Arrays.toString(elements));
-        root = BalanceTree(elements, 0, elements.length);
+        double sum = 0;
+        for (int i = 0; i < elements.length; ++i) {
+            sumArray.add(sum);
+            sum += elements[i];
+        }
+        sumArray.add(sum);
 
-        //double[] test = {1,2,3,4,5,6,7,8};
-        //System.out.println("Found cut at: " + findCut(test, 0, test.length));
+        root = BalanceTree(elements, 0, elements.length);
 	}
 
     public WBTNode BalanceTree (double[] elems, int start, int end) {
-        //System.out.println("BalanceTree for start=" + start + " end=" + end);
         if (start == end) return null;
         if ((end - start) == 1) {
-            //System.out.println("Inserting key " + start);
             return new WBTNode(elems[start], start);
         }
         
         int cut = findCut(elems, start, end);
-        //System.out.println("Inserting key " + cut);
         WBTNode currRoot = new WBTNode(elems[cut], cut);
         currRoot.leftChild = BalanceTree(elems, start, cut);
         currRoot.rightChild = BalanceTree(elems, cut+1, end);
@@ -44,6 +47,8 @@ public class WeightBalancedTree implements BST {
         for (int i = start; i < end; ++i) {
             total += elems[i];
         }
+        double fastTotal = sumArray.get(end) - sumArray.get(start);
+        //assert (total == fastTotal) : "sum not equal, total="+total+" fastTotal="+fastTotal ;
 
         double leftSum = 0;
         double rightSum = total - elems[start];
@@ -59,7 +64,6 @@ public class WeightBalancedTree implements BST {
             }
             else break;
         }
-        //System.out.println("cut at " + cut + " for start=" + start + " end=" + end);
 
         return cut;
     }
@@ -71,7 +75,6 @@ public class WeightBalancedTree implements BST {
 	 * @return Whether it's in the BST.
 	 */
 	public boolean contains(int key) {
-		// TODO: Implement this!
 		return DFS(root, key);
 	}
     
