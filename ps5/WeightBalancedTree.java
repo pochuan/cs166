@@ -43,11 +43,11 @@ public class WeightBalancedTree implements BST {
     public int findCut(double[] elems, int start, int end) {
         if ((end - start) == 1) return start;
 
-        double total = 0;
-        for (int i = start; i < end; ++i) {
-            total += elems[i];
-        }
-        double fastTotal = sumArray.get(end) - sumArray.get(start);
+        //double total = 0;
+        //for (int i = start; i < end; ++i) {
+        //    total += elems[i];
+        //}
+        double total = sumArray.get(end) - sumArray.get(start);
         //assert (total == fastTotal) : "sum not equal, total="+total+" fastTotal="+fastTotal ;
 
         double leftSum = 0;
@@ -58,11 +58,13 @@ public class WeightBalancedTree implements BST {
             leftSum += elems[i-1];
             rightSum -= elems[i];
             double currDiff = Math.abs(leftSum - rightSum);
-            if (currDiff < diff) {
+            if (currDiff <= diff) {
                 diff = currDiff;
                 cut = i;
             }
-            else break;
+            else {
+                return cut;
+            }
         }
 
         return cut;
