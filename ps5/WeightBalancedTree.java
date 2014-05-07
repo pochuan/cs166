@@ -1,3 +1,4 @@
+import java.util.Arrays;
 /**
  * An implementation of a static BST backed by a weight-balanced tree.
  */
@@ -13,21 +14,26 @@ public class WeightBalancedTree implements BST {
 	 */
 	public WeightBalancedTree(double[] elements) {
 		// TODO: Implement this!
+        //System.out.println("Construct WBT for " + Arrays.toString(elements));
         root = BalanceTree(elements, 0, elements.length);
 
-        double[] test = {1,3,2,5};
-        System.out.println("Found cut at: " + findCut(test, 0, test.length));
+        //double[] test = {1,2,3,4,5,6,7,8};
+        //System.out.println("Found cut at: " + findCut(test, 0, test.length));
 	}
 
-    public BWTNode BalanceTree (double elems, int start, int end) {
+    public WBTNode BalanceTree (double[] elems, int start, int end) {
+        //System.out.println("BalanceTree for start=" + start + " end=" + end);
+        if (start == end) return null;
         if ((end - start) == 1) {
-            return newWBTNode(elems[start], start);
+            //System.out.println("Inserting key " + start);
+            return new WBTNode(elems[start], start);
         }
         
         int cut = findCut(elems, start, end);
-        BWTNode currRoot = new WBTNode(elems[cut], cut);
-        currRoot.left = BalanceTree(elems, start, cut);
-        currRoot.right = BalanceTree(elems, cut+1, end);
+        //System.out.println("Inserting key " + cut);
+        WBTNode currRoot = new WBTNode(elems[cut], cut);
+        currRoot.leftChild = BalanceTree(elems, start, cut);
+        currRoot.rightChild = BalanceTree(elems, cut+1, end);
         return currRoot;
     }
 
@@ -53,6 +59,7 @@ public class WeightBalancedTree implements BST {
             }
             else break;
         }
+        //System.out.println("cut at " + cut + " for start=" + start + " end=" + end);
 
         return cut;
     }
@@ -68,11 +75,14 @@ public class WeightBalancedTree implements BST {
 		return DFS(root, key);
 	}
     
-    public boolean DFS(BWTNode node, int key) {
+    public boolean DFS(WBTNode node, int key) {
         if (node == null) return false;
-        if (node.payload == key) return true;
-        DFS(node.leftChild, key);
-        DFS(node.rightChild, key);
-        return false;
+        else if (node.payload == key) return true;
+        else {
+            if (DFS(node.leftChild, key)) {
+                return true;
+            }
+            return DFS(node.rightChild, key);
+        }
     }
 }
