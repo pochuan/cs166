@@ -43,6 +43,9 @@ public class SplayTree implements BST {
 				//error!  Assert?
 			}
 		}
+		else {
+			root = a;
+		}
 		a.parent = grandparent;
 
 		// make b the parent of the middle subtree
@@ -52,7 +55,7 @@ public class SplayTree implements BST {
 		}
 
 		// make a the parent of b
-		a.left = b;
+		a.right = b;
 		b.parent = a;
 		return grandparent;
 	}
@@ -72,6 +75,9 @@ public class SplayTree implements BST {
 				//error!  Assert?
 			}
 		}
+		else {
+			root = b;
+		}
 		b.parent = grandparent;
 
 		// make a the parent of the middle subtree
@@ -89,6 +95,7 @@ public class SplayTree implements BST {
 	// Returns true if this was actually a zigzig case, and does the zig zig.
 	// False otherwise
 	private boolean doZigZig(SplayTreeNode cur) {
+		//System.out.println("Doing Zig Zig");
 		SplayTreeNode parent = cur.parent;
 		if (parent == null) {
 			return false;
@@ -98,11 +105,14 @@ public class SplayTree implements BST {
 			return false;
 		}
 		if ((cur == parent.left) && (parent == grandparent.left)) {
+			//System.out.println("zig zig right");
+			//System.out.println("parent was " + parent.key + "; grandparent was " + grandparent.key + "; cur was " + cur.key);
 			rotateRight(parent, grandparent);
 			rotateRight(cur, parent);
 			return true;
 		} 
 		if ((cur == parent.right) && (parent == grandparent.right)) {
+			//System.out.println("zig zig left");
 			rotateLeft(grandparent, parent);
 			rotateLeft(parent, cur);
 			return true;
@@ -111,6 +121,7 @@ public class SplayTree implements BST {
 	}
 
 	private boolean doZigZag(SplayTreeNode cur) {
+		//System.out.println("Doing Zig Zag");
 		SplayTreeNode parent = cur.parent;
 		if (parent == null) {
 			return false;
@@ -133,11 +144,12 @@ public class SplayTree implements BST {
 	}
 
 	private boolean doZig(SplayTreeNode cur) {
+		//System.out.println("Doing Zig");
 		//return (cur.parent == root);
 		if (cur.parent != root) {
 			return false;
 		}
-		// do zig
+		/*// do zig
 		if (cur == root.left) {
 			cur.parent = null;
 			root.parent = cur;
@@ -151,7 +163,15 @@ public class SplayTree implements BST {
 			root.right = cur.left;
 			cur.left = root;
 			root = cur;
+		}*/
+		if (root.left == cur) {
+			rotateRight(cur, root);
 		}
+		else if (root.right == cur) {
+			rotateLeft(root, cur);
+		}
+
+
 		return true;
 	}
 	/**
@@ -161,16 +181,20 @@ public class SplayTree implements BST {
 	 * @return Whether it's in the BST.
 	 */
 	public boolean contains(int key) {
+		//System.out.println("Searching for " + key);
 		// Search for the node
 		SplayTreeNode cur = root;
 		while (cur != null) {
 			if (cur.key == key) {
+				//System.out.println("Found key " + key);
 				break;
 			}
 			if (cur.key > key) {
+				//System.out.println("Current node's key " + cur.key  + " is bigger than target key " + key);
 				cur = cur.left;
 			}
 			else {
+				//System.out.println("Current node's key " + cur.key  + " is smaller than target key " + key);
 				cur = cur.right;
 			}
 		}
@@ -180,17 +204,34 @@ public class SplayTree implements BST {
 			return false;
 		}
 
+		//System.out.println("Found node with key " + key);
 		// splay up
 		while (root != cur) {
-			if (doZigZig(cur)) {
-				continue;
+			if (doZig(cur)) {
+				//System.out.println("Zig was successful");
 			}
-			if (doZigZag(cur)) {
-				continue;
+			else if (doZigZag(cur)) {
+				//System.out.println("ZigZag was successful");
 			}
-			doZig(cur);
+			else if (doZigZig(cur)) {
+				//System.out.println("ZigZig was successful");
+			}
+			else {
+				//System.out.println("Nothing worked on this round");
+				return false;
+			}
 		}
 
+		//System.out.println("Tree now looks like:\n\t" + root.key);
+		/*if (root.left != null && root.right != null) {
+			System.out.println("" + root.left.key + "\t" + root.right.key);
+		}
+		if (root.left == null && root.right != null) {
+			System.out.println("Tree goes only to the right");
+		}
+		if (root.right == null && root.left != null) {
+			System.out.println("Tree goes only to the left");
+		}*/
 		return true;
 	}
 }

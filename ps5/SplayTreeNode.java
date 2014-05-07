@@ -17,7 +17,10 @@ public class SplayTreeNode {
     }
 
     public SplayTreeNode(double newKey) {
-        new SplayTreeNode(newKey, null, null, null);
+        key = newKey;
+        left = null;
+        right = null;
+        parent = null;
     }
 
     // Returns the child's old parent
